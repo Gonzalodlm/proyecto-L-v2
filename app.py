@@ -10,7 +10,7 @@ from etf_descriptions import ETF_INFO
 
 # Configuración de la página
 st.set_page_config(
-    page_title="Robo-Advisor Premium", 
+    page_title="Impulso Inversor", 
     page_icon="💎",
     layout="wide"
 )
@@ -76,7 +76,7 @@ def simulate_portfolio(weights, initial_investment=10000):
     return portfolio_value
 
 # ---------- INTERFAZ PRINCIPAL ----------
-st.title("💎 Robo-Advisor Premium")
+st.title("💎 Impulso Inversor")
 st.subheader("Tu asesor de inversiones inteligente y personalizado")
 st.markdown("---")
 
