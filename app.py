@@ -11,6 +11,135 @@ from scoring import score_user, bucket_to_label
 from portfolios import MODEL_PORTFOLIOS
 from etf_descriptions import ETF_INFO
 
+# ========== FUNCIONES DE CALCULADORA FINANCIERA ==========
+
+def calculate_retirement_goal(current_age, retirement_age, current_savings, monthly_expenses, inflation_rate=0.03):
+    """Calcula cuánto necesitas para jubilarte"""
+    years_to_retirement = retirement_age - current_age
+    years_in_retirement = 25  # Promedio de años después de jubilarse
+    
+    # Gastos ajustados por inflación en el momento de jubilación
+    future_monthly_expenses = monthly_expenses * (1 + inflation_rate) ** years_to_retirement
+    annual_expenses_retirement = future_monthly_expenses * 12
+    
+    # Regla del 4%: necesitas 25 veces tus gastos anuales
+    total_needed = annual_expenses_retirement * 25
+    
+    # Valor futuro de ahorros actuales
+    future_value_current_savings = current_savings * (1 + inflation_rate) ** years_to_retirement
+    
+    # Cuánto falta ahorrar
+    additional_needed = max(0, total_needed - future_value_current_savings)
+    
+    return {
+        'total_needed': total_needed,
+        'current_savings_future_value': future_value_current_savings,
+        'additional_needed': additional_needed,
+        'monthly_expenses_at_retirement': future_monthly_expenses,
+        'years_to_retirement': years_to_retirement
+    }
+
+def calculate_monthly_investment_needed(target_amount, years, expected_return=0.07):
+    """Calcula cuánto invertir mensualmente para alcanzar una meta"""
+    if years <= 0:
+        return target_amount
+    
+    months = years * 12
+    monthly_rate = expected_return / 12
+    
+    if monthly_rate == 0:
+        return target_amount / months
+    
+    # Fórmula de anualidad ordinaria
+    monthly_payment = target_amount * monthly_rate / ((1 + monthly_rate) ** months - 1)
+    return monthly_payment
+
+def calculate_house_down_payment(house_price, down_payment_pct=0.20, years_to_buy=5, expected_return=0.07):
+    """Calcula cuánto ahorrar para el enganche de una casa"""
+    down_payment_needed = house_price * down_payment_pct
+    monthly_needed = calculate_monthly_investment_needed(down_payment_needed, years_to_buy, expected_return)
+    
+    closing_costs = house_price * 0.03  # 3% costos de cierre típicos
+    total_upfront = down_payment_needed + closing_costs
+    monthly_total = calculate_monthly_investment_needed(total_upfront, years_to_buy, expected_return)
+    
+    return {
+        'house_price': house_price,
+        'down_payment_needed': down_payment_needed,
+        'closing_costs': closing_costs,
+        'total_upfront': total_upfront,
+        'monthly_for_down_payment': monthly_needed,
+        'monthly_total': monthly_total,
+        'years_to_save': years_to_buy
+    }
+
+def calculate_education_fund(child_age, college_cost_today=50000, years_of_college=4, inflation_rate=0.05, expected_return=0.07):
+    """Calcula cuánto ahorrar para la universidad"""
+    years_until_college = max(0, 18 - child_age)
+    
+    # Costo futuro de la universidad ajustado por inflación
+    future_annual_cost = college_cost_today * (1 + inflation_rate) ** years_until_college
+    total_college_cost = future_annual_cost * years_of_college
+    
+    if years_until_college <= 0:
+        return {
+            'total_needed': total_college_cost,
+            'monthly_needed': total_college_cost / 12,
+            'years_to_save': 1,
+            'future_annual_cost': future_annual_cost
+        }
+    
+    monthly_needed = calculate_monthly_investment_needed(total_college_cost, years_until_college, expected_return)
+    
+    return {
+        'total_needed': total_college_cost,
+        'monthly_needed': monthly_needed,
+        'years_to_save': years_until_college,
+        'future_annual_cost': future_annual_cost
+    }
+
+def calculate_emergency_fund(monthly_expenses, months_coverage=6):
+    """Calcula el fondo de emergencia necesario"""
+    emergency_fund_target = monthly_expenses * months_coverage
+    
+    # Tiempo recomendado para construir el fondo: 2 años
+    years_to_build = 2
+    monthly_savings_needed = emergency_fund_target / (years_to_build * 12)
+    
+    return {
+        'target_amount': emergency_fund_target,
+        'monthly_savings_needed': monthly_savings_needed,
+        'months_coverage': months_coverage,
+        'years_to_build': years_to_build
+    }
+
+def calculate_portfolio_projection(initial_amount, monthly_contribution, years, expected_return):
+    """Proyecta el crecimiento del portafolio"""
+    months = years * 12
+    monthly_rate = expected_return / 12
+    
+    # Valor futuro del monto inicial
+    future_value_initial = initial_amount * (1 + monthly_rate) ** months
+    
+    # Valor futuro de contribuciones mensuales
+    if monthly_rate == 0:
+        future_value_contributions = monthly_contribution * months
+    else:
+        future_value_contributions = monthly_contribution * (((1 + monthly_rate) ** months - 1) / monthly_rate)
+    
+    total_future_value = future_value_initial + future_value_contributions
+    total_contributions = initial_amount + (monthly_contribution * months)
+    total_interest = total_future_value - total_contributions
+    
+    return {
+        'future_value': total_future_value,
+        'total_contributions': total_contributions,
+        'total_interest': total_interest,
+        'initial_amount': initial_amount,
+        'monthly_contribution': monthly_contribution,
+        'years': years
+    }
+
 # Configuración de la página
 st.set_page_config(
     page_title="Impulso Inversor", 
@@ -663,7 +792,7 @@ with st.expander("🎓 ¿Por qué Impulso Inversor utiliza ETFs?", expanded=Fals
         """, unsafe_allow_html=True)
 
 # Tabs principales
-tab1, tab2, tab3, tab4 = st.tabs(["▲ Análisis de Perfil", "↗ Simulación Histórica", "⟲ Rebalanceo", "⊡ Información ETFs"])
+tab1, tab2, tab3, tab4, tab5 = st.tabs(["▲ Análisis de Perfil", "↗ Simulación Histórica", "⟲ Rebalanceo", "⊡ Información ETFs", "🎯 Metas Financieras"])
 
 with tab1:
     col1, col2 = st.columns([2, 1])
@@ -1297,6 +1426,307 @@ with tab4:
         
         for term, definition in glossary.items():
             st.markdown(f"**{term}:** {definition}")
+
+with tab5:
+    st.markdown("## 🎯 Calculadora de Metas Financieras")
+    st.markdown("### Planifica tu futuro financiero con precisión")
+    
+    # Selector de tipo de meta
+    goal_type = st.selectbox(
+        "¿Qué meta financiera quieres calcular?",
+        ["🏖️ Jubilación", "🏠 Comprar Casa", "🎓 Educación/Universidad", "🚨 Fondo de Emergencia", "📊 Proyección de Portafolio"],
+        index=0
+    )
+    
+    if goal_type == "🏖️ Jubilación":
+        st.markdown("---")
+        st.markdown("### 🏖️ Calculadora de Jubilación")
+        
+        col1, col2 = st.columns([1, 1])
+        
+        with col1:
+            st.markdown("#### Información Personal")
+            current_age = st.slider("Tu edad actual", 18, 65, 30)
+            retirement_age = st.slider("Edad de jubilación deseada", current_age + 1, 75, 65)
+            current_savings = st.number_input("Ahorros actuales para jubilación ($)", 0, 1000000, 10000, 1000)
+            monthly_expenses = st.number_input("Gastos mensuales actuales ($)", 500, 20000, 3000, 100)
+            inflation_rate = st.slider("Tasa de inflación anual (%)", 1.0, 6.0, 3.0, 0.1) / 100
+        
+        with col2:
+            if st.button("🔮 Calcular Plan de Jubilación", use_container_width=True):
+                result = calculate_retirement_goal(current_age, retirement_age, current_savings, monthly_expenses, inflation_rate)
+                
+                st.markdown("#### 🎯 Resultados:")
+                
+                col_a, col_b = st.columns(2)
+                with col_a:
+                    st.metric("💰 Total necesario", f"${result['total_needed']:,.0f}")
+                    st.metric("📈 Valor futuro ahorros actuales", f"${result['current_savings_future_value']:,.0f}")
+                
+                with col_b:
+                    st.metric("💸 Cantidad adicional a ahorrar", f"${result['additional_needed']:,.0f}")
+                    st.metric("🏠 Gastos mensuales al jubilarte", f"${result['monthly_expenses_at_retirement']:,.0f}")
+                
+                # Calcular cuánto invertir mensualmente
+                if result['additional_needed'] > 0:
+                    expected_return = 0.07  # 7% anual promedio
+                    monthly_needed = calculate_monthly_investment_needed(
+                        result['additional_needed'], 
+                        result['years_to_retirement'], 
+                        expected_return
+                    )
+                    
+                    st.markdown("---")
+                    st.markdown("#### 📊 Plan de Inversión Sugerido:")
+                    
+                    col_x, col_y = st.columns(2)
+                    with col_x:
+                        st.metric("💵 Inversión mensual necesaria", f"${monthly_needed:,.0f}")
+                        st.metric("⏱️ Años hasta jubilación", f"{result['years_to_retirement']} años")
+                    
+                    with col_y:
+                        total_contributions = monthly_needed * result['years_to_retirement'] * 12
+                        st.metric("💰 Total a contribuir", f"${total_contributions:,.0f}")
+                        st.metric("📈 Rendimiento esperado", "7% anual")
+                    
+                    # Crear gráfico de proyección
+                    years_data = list(range(0, result['years_to_retirement'] + 1))
+                    values_data = []
+                    
+                    for year in years_data:
+                        projection = calculate_portfolio_projection(
+                            current_savings, monthly_needed, year, expected_return
+                        )
+                        values_data.append(projection['future_value'])
+                    
+                    fig = go.Figure()
+                    fig.add_trace(go.Scatter(
+                        x=years_data,
+                        y=values_data,
+                        mode='lines',
+                        name='Valor del portafolio',
+                        line=dict(color='#667eea', width=3)
+                    ))
+                    
+                    fig.add_hline(y=result['total_needed'], line_dash="dash", 
+                                line_color="red", annotation_text="Meta de jubilación")
+                    
+                    fig.update_layout(
+                        title="Proyección de tu Fondo de Jubilación",
+                        xaxis_title="Años",
+                        yaxis_title="Valor ($)",
+                        height=400
+                    )
+                    
+                    st.plotly_chart(fig, use_container_width=True)
+                else:
+                    st.success("🎉 ¡Felicitaciones! Ya tienes suficiente dinero ahorrado para tu jubilación.")
+    
+    elif goal_type == "🏠 Comprar Casa":
+        st.markdown("---")
+        st.markdown("### 🏠 Calculadora para Comprar Casa")
+        
+        col1, col2 = st.columns([1, 1])
+        
+        with col1:
+            st.markdown("#### Detalles de la Casa")
+            house_price = st.number_input("Precio de la casa ($)", 50000, 2000000, 300000, 10000)
+            down_payment_pct = st.slider("Porcentaje de enganche (%)", 5, 50, 20) / 100
+            years_to_buy = st.slider("¿En cuántos años quieres comprar?", 1, 15, 5)
+            expected_return = st.slider("Rendimiento esperado de inversiones (%)", 3.0, 12.0, 7.0, 0.5) / 100
+        
+        with col2:
+            if st.button("🏠 Calcular Plan de Ahorro", use_container_width=True):
+                result = calculate_house_down_payment(house_price, down_payment_pct, years_to_buy, expected_return)
+                
+                st.markdown("#### 🎯 Resultados:")
+                
+                col_a, col_b = st.columns(2)
+                with col_a:
+                    st.metric("🏠 Precio de la casa", f"${result['house_price']:,.0f}")
+                    st.metric("💰 Enganche necesario", f"${result['down_payment_needed']:,.0f}")
+                
+                with col_b:
+                    st.metric("📋 Costos de cierre", f"${result['closing_costs']:,.0f}")
+                    st.metric("💸 Total necesario", f"${result['total_upfront']:,.0f}")
+                
+                st.markdown("---")
+                st.markdown("#### 📊 Plan de Inversión:")
+                
+                col_x, col_y = st.columns(2)
+                with col_x:
+                    st.metric("💵 Inversión mensual total", f"${result['monthly_total']:,.0f}")
+                    st.metric("💰 Solo para enganche", f"${result['monthly_for_down_payment']:,.0f}")
+                
+                with col_y:
+                    st.metric("⏱️ Tiempo de ahorro", f"{result['years_to_save']} años")
+                    st.metric("📈 Rendimiento asumido", f"{expected_return*100:.1f}% anual")
+    
+    elif goal_type == "🎓 Educación/Universidad":
+        st.markdown("---")
+        st.markdown("### 🎓 Calculadora de Educación/Universidad")
+        
+        col1, col2 = st.columns([1, 1])
+        
+        with col1:
+            st.markdown("#### Información del Estudiante")
+            child_age = st.slider("Edad actual del estudiante", 0, 17, 5)
+            college_cost_today = st.number_input("Costo anual universidad hoy ($)", 10000, 100000, 50000, 1000)
+            years_of_college = st.slider("Años de universidad", 2, 6, 4)
+            inflation_rate = st.slider("Inflación educativa anual (%)", 3.0, 8.0, 5.0, 0.1) / 100
+            expected_return = st.slider("Rendimiento esperado (%)", 4.0, 10.0, 7.0, 0.5) / 100
+        
+        with col2:
+            if st.button("🎓 Calcular Plan Educativo", use_container_width=True):
+                result = calculate_education_fund(child_age, college_cost_today, years_of_college, inflation_rate, expected_return)
+                
+                st.markdown("#### 🎯 Resultados:")
+                
+                col_a, col_b = st.columns(2)
+                with col_a:
+                    st.metric("💰 Total necesario", f"${result['total_needed']:,.0f}")
+                    st.metric("📈 Costo anual futuro", f"${result['future_annual_cost']:,.0f}")
+                
+                with col_b:
+                    st.metric("💵 Inversión mensual", f"${result['monthly_needed']:,.0f}")
+                    st.metric("⏱️ Años para ahorrar", f"{result['years_to_save']} años")
+                
+                if result['years_to_save'] > 0:
+                    st.info(f"💡 **Consejo**: Empezar a ahorrar ${result['monthly_needed']:,.0f} mensuales te permitirá cubrir completamente los costos universitarios.")
+                else:
+                    st.warning("⚠️ El estudiante ya está en edad universitaria. Necesitas el dinero inmediatamente.")
+    
+    elif goal_type == "🚨 Fondo de Emergencia":
+        st.markdown("---")
+        st.markdown("### 🚨 Calculadora de Fondo de Emergencia")
+        
+        col1, col2 = st.columns([1, 1])
+        
+        with col1:
+            st.markdown("#### Información de Gastos")
+            monthly_expenses = st.number_input("Gastos mensuales esenciales ($)", 500, 15000, 3000, 100)
+            months_coverage = st.slider("Meses de cobertura deseados", 3, 12, 6)
+            current_emergency_fund = st.number_input("Fondo de emergencia actual ($)", 0, 100000, 0, 500)
+        
+        with col2:
+            if st.button("🚨 Calcular Fondo de Emergencia", use_container_width=True):
+                result = calculate_emergency_fund(monthly_expenses, months_coverage)
+                
+                st.markdown("#### 🎯 Resultados:")
+                
+                target_needed = result['target_amount'] - current_emergency_fund
+                
+                col_a, col_b = st.columns(2)
+                with col_a:
+                    st.metric("🎯 Meta total", f"${result['target_amount']:,.0f}")
+                    st.metric("💰 Ya tienes", f"${current_emergency_fund:,.0f}")
+                
+                with col_b:
+                    st.metric("💸 Aún necesitas", f"${max(0, target_needed):,.0f}")
+                    st.metric("📅 Meses de cobertura", f"{months_coverage} meses")
+                
+                if target_needed > 0:
+                    monthly_to_save = target_needed / (result['years_to_build'] * 12)
+                    st.markdown("---")
+                    st.markdown("#### 📊 Plan de Ahorro:")
+                    
+                    col_x, col_y = st.columns(2)
+                    with col_x:
+                        st.metric("💵 Ahorro mensual sugerido", f"${monthly_to_save:,.0f}")
+                        st.metric("⏱️ Tiempo para completar", f"{result['years_to_build']} años")
+                    
+                    with col_y:
+                        percentage_of_income = (monthly_to_save / monthly_expenses) * 100
+                        st.metric("📊 % de tus gastos mensuales", f"{percentage_of_income:.1f}%")
+                        st.metric("🎯 Cobertura objetivo", f"{months_coverage} meses")
+                    
+                    st.info("💡 **Recomendación**: Guarda este dinero en una cuenta de ahorros de alto rendimiento, no en inversiones riesgosas.")
+                else:
+                    st.success("🎉 ¡Felicitaciones! Ya tienes un fondo de emergencia completo.")
+    
+    elif goal_type == "📊 Proyección de Portafolio":
+        st.markdown("---")
+        st.markdown("### 📊 Proyección de Crecimiento del Portafolio")
+        
+        col1, col2 = st.columns([1, 1])
+        
+        with col1:
+            st.markdown("#### Parámetros de Inversión")
+            initial_amount = st.number_input("Inversión inicial ($)", 0, 1000000, 10000, 1000)
+            monthly_contribution = st.number_input("Contribución mensual ($)", 0, 10000, 500, 50)
+            years = st.slider("Período de inversión (años)", 1, 40, 20)
+            expected_return = st.slider("Rendimiento anual esperado (%)", 1.0, 15.0, 7.0, 0.5) / 100
+        
+        with col2:
+            if st.button("📊 Calcular Proyección", use_container_width=True):
+                result = calculate_portfolio_projection(initial_amount, monthly_contribution, years, expected_return)
+                
+                st.markdown("#### 🎯 Proyección Futura:")
+                
+                col_a, col_b = st.columns(2)
+                with col_a:
+                    st.metric("💰 Valor futuro total", f"${result['future_value']:,.0f}")
+                    st.metric("💵 Total contribuido", f"${result['total_contributions']:,.0f}")
+                
+                with col_b:
+                    st.metric("📈 Interés ganado", f"${result['total_interest']:,.0f}")
+                    roi_percentage = (result['total_interest'] / result['total_contributions']) * 100
+                    st.metric("📊 ROI total", f"{roi_percentage:.1f}%")
+                
+                # Crear gráfico de proyección año por año
+                years_data = list(range(0, years + 1))
+                values_data = []
+                contributions_data = []
+                
+                for year in years_data:
+                    proj = calculate_portfolio_projection(initial_amount, monthly_contribution, year, expected_return)
+                    values_data.append(proj['future_value'])
+                    contributions_data.append(proj['total_contributions'])
+                
+                fig = go.Figure()
+                
+                fig.add_trace(go.Scatter(
+                    x=years_data,
+                    y=contributions_data,
+                    mode='lines',
+                    name='Total Contribuido',
+                    line=dict(color='#f093fb', width=2)
+                ))
+                
+                fig.add_trace(go.Scatter(
+                    x=years_data,
+                    y=values_data,
+                    mode='lines',
+                    name='Valor Total',
+                    line=dict(color='#667eea', width=3)
+                ))
+                
+                fig.update_layout(
+                    title="Crecimiento del Portafolio a lo Largo del Tiempo",
+                    xaxis_title="Años",
+                    yaxis_title="Valor ($)",
+                    height=400
+                )
+                
+                st.plotly_chart(fig, use_container_width=True)
+                
+                # Tabla año por año (últimos 10 años)
+                if years >= 10:
+                    st.markdown("#### 📅 Proyección por Década:")
+                    decade_data = []
+                    for decade in [10, 20, 30, 40]:
+                        if decade <= years:
+                            proj = calculate_portfolio_projection(initial_amount, monthly_contribution, decade, expected_return)
+                            decade_data.append({
+                                'Años': decade,
+                                'Valor Total': f"${proj['future_value']:,.0f}",
+                                'Contribuciones': f"${proj['total_contributions']:,.0f}",
+                                'Interés Ganado': f"${proj['total_interest']:,.0f}"
+                            })
+                    
+                    if decade_data:
+                        df_decades = pd.DataFrame(decade_data)
+                        st.dataframe(df_decades, use_container_width=True)
 
 # Footer estilo AmberLatam
 st.markdown("""
