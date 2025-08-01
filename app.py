@@ -14,7 +14,7 @@ from etf_descriptions import ETF_INFO
 # Configuración de la página
 st.set_page_config(
     page_title="Impulso Inversor", 
-    page_icon="💎",
+    page_icon="✨",
     layout="wide",
     initial_sidebar_state="expanded"
 )
@@ -551,7 +551,7 @@ def validate_user_inputs(answers):
 
 # ========== SIDEBAR ==========
 with st.sidebar:
-    st.markdown("## 🎯 Panel de Control")
+    st.markdown("## ● Panel de Control")
     
     if 'profile' in st.session_state:
         profile = st.session_state['profile']
@@ -566,7 +566,7 @@ with st.sidebar:
         # Mostrar alertas en sidebar
         alerts = generate_risk_alerts(profile['portfolio'], profile['bucket'])
         if alerts:
-            st.markdown("### ⚠️ Alertas")
+            st.markdown("### ◆ Alertas")
             for alert in alerts:
                 alert_type = alert['type']
                 if alert_type == 'warning':
@@ -580,7 +580,7 @@ with st.sidebar:
     st.markdown("---")
     
     # Simulador de inversión
-    st.markdown("### 💰 Simulador de Inversión")
+    st.markdown("### $ Simulador de Inversión")
     investment_amount = st.number_input(
         "Monto a invertir ($)",
         min_value=1000,
@@ -590,7 +590,7 @@ with st.sidebar:
     )
     
     # Configuraciones avanzadas
-    with st.expander("⚙️ Configuraciones"):
+    with st.expander("··· Configuraciones"):
         show_benchmarks = st.checkbox("Mostrar benchmarks", value=True)
         investment_period = st.selectbox(
             "Período de análisis",
@@ -601,7 +601,7 @@ with st.sidebar:
 # ========== INTERFAZ PRINCIPAL ==========
 st.markdown("""
 <div class="main-header">
-    <h1 class="main-title">💎 Impulso Inversor</h1>
+    <h1 class="main-title">✨ Impulso Inversor</h1>
     <p class="main-subtitle">Tu asesor de inversiones inteligente y personalizado</p>
 </div>
 """, unsafe_allow_html=True)
@@ -613,79 +613,79 @@ if 'profile' in st.session_state:
     
     with col1:
         equity_pct = portfolio.get('ACWI', 0) * 100
-        st.metric("🏢 Acciones", f"{equity_pct:.0f}%")
+        st.metric("▦ Acciones", f"{equity_pct:.0f}%")
     
     with col2:
         bonds_pct = portfolio.get('AGG', 0) * 100
-        st.metric("🏛️ Bonos", f"{bonds_pct:.0f}%")
+        st.metric("▪ Bonos", f"{bonds_pct:.0f}%")
     
     with col3:
         reits_pct = portfolio.get('VNQ', 0) * 100
-        st.metric("🏠 REITs", f"{reits_pct:.0f}%")
+        st.metric("▫ REITs", f"{reits_pct:.0f}%")
     
     with col4:
         gold_pct = portfolio.get('GLD', 0) * 100
-        st.metric("🥇 Oro", f"{gold_pct:.0f}%")
+        st.metric("◇ Oro", f"{gold_pct:.0f}%")
 
 st.markdown("---")
 
 # Tabs principales
-tab1, tab2, tab3, tab4 = st.tabs(["📊 Análisis de Perfil", "📈 Simulación Histórica", "🔄 Rebalanceo", "📚 Información ETFs"])
+tab1, tab2, tab3, tab4 = st.tabs(["▲ Análisis de Perfil", "↗ Simulación Histórica", "⟲ Rebalanceo", "⊡ Información ETFs"])
 
 with tab1:
     col1, col2 = st.columns([2, 1])
     
     with col1:
-        st.markdown("## 📋 Cuestionario de Perfil de Riesgo")
+        st.markdown("## ▢ Cuestionario de Perfil de Riesgo")
         
         with st.form("questionnaire"):
             col_q1, col_q2 = st.columns(2)
             
             with col_q1:
-                age = st.slider("1️⃣ ¿Cuál es tu edad?", 18, 75, 30)
+                age = st.slider("❶ ¿Cuál es tu edad?", 18, 75, 30)
                 horizon = st.selectbox(
-                    "2️⃣ Horizonte de inversión",
+                    "❷ Horizonte de inversión",
                     ("< 3 años", "3-5 años", "5-10 años", "> 10 años"),
                 )
                 income = st.selectbox(
-                    "3️⃣ % de ingresos para invertir",
+                    "❸ % de ingresos para invertir",
                     ("< 5 %", "5-10 %", "10-20 %", "> 20 %"),
                 )
                 knowledge = st.selectbox(
-                    "4️⃣ Conocimiento financiero",
+                    "❹ Conocimiento financiero",
                     ("Principiante", "Intermedio", "Avanzado"),
                 )
                 max_drop = st.selectbox(
-                    "5️⃣ Caída máxima tolerable",
+                    "❺ Caída máxima tolerable",
                     ("5 %", "10 %", "20 %", "30 %", "> 30 %"),
                 )
             
             with col_q2:
                 reaction = st.selectbox(
-                    "6️⃣ Si tu portafolio cae 15%",
+                    "❶ Si tu portafolio cae 15%",
                     ("Vendo todo", "Vendo una parte", "No hago nada", "Compro más"),
                 )
                 liquidity = st.selectbox(
-                    "7️⃣ Necesidad de liquidez",
+                    "❷ Necesidad de liquidez",
                     ("Alta", "Media", "Baja"),
                 )
                 goal = st.selectbox(
-                    "8️⃣ Objetivo principal",
+                    "❸ Objetivo principal",
                     ("Proteger capital", "Ingresos regulares", "Crecimiento balanceado", "Máximo crecimiento"),
                 )
                 inflation = st.selectbox(
-                    "9️⃣ Preocupación por inflación",
+                    "❹ Preocupación por inflación",
                     ("No me preocupa", "Me preocupa moderadamente", "Me preocupa mucho"),
                 )
                 digital = st.selectbox(
-                    "🔟 Confianza en plataformas digitales",
+                    "❺ Confianza en plataformas digitales",
                     ("Baja", "Media", "Alta"),
                 )
 
-            submitted = st.form_submit_button("🎯 Calcular mi perfil", use_container_width=True)
+            submitted = st.form_submit_button("● Calcular mi perfil", use_container_width=True)
 
     with col2:
-        st.markdown("## 🎯 Tu Resultado")
+        st.markdown("## ● Tu Resultado")
         
         if submitted:
             answers = dict(
@@ -731,7 +731,7 @@ with tab1:
     # Mostrar portafolio recomendado
     if 'profile' in st.session_state:
         st.markdown("---")
-        st.markdown("## 💼 Tu Portafolio Recomendado")
+        st.markdown("## ◐ Tu Portafolio Recomendado")
         
         portfolio = st.session_state['profile']['portfolio']
         
@@ -743,7 +743,7 @@ with tab1:
             st.plotly_chart(fig, use_container_width=True)
         
         with col2:
-            st.markdown("### 📋 Detalle de ETFs")
+            st.markdown("### ▢ Detalle de ETFs")
             for ticker, weight in portfolio.items():
                 info = ETF_INFO[ticker]
                 st.markdown(f"""
@@ -769,7 +769,7 @@ with tab1:
         
         csv = pf_df.to_csv(index=False).encode()
         st.download_button(
-            "📥 Descargar portafolio detallado (CSV)",
+            "⬇ Descargar portafolio detallado (CSV)",
             csv,
             f"impulso_inversor_{st.session_state['profile']['label']}_{datetime.now().strftime('%Y%m%d')}.csv",
             "text/csv",
@@ -777,7 +777,7 @@ with tab1:
         )
 
 with tab2:
-    st.markdown("## 📈 Simulación Histórica del Portafolio")
+    st.markdown("## ↗ Simulación Histórica del Portafolio")
     
     if 'profile' in st.session_state:
         portfolio = st.session_state['profile']['portfolio']
@@ -800,26 +800,26 @@ with tab2:
             
             with col1:
                 st.metric(
-                    "💰 Inversión Inicial",
+                    "● Inversión Inicial",
                     f"${investment_amount:,}"
                 )
             
             with col2:
                 st.metric(
-                    "💎 Valor Final",
+                    "◆ Valor Final",
                     f"${final_value:,.0f}",
                     delta=f"+${final_value-investment_amount:,.0f}"
                 )
             
             with col3:
                 st.metric(
-                    "📊 Retorno Total",
+                    "▲ Retorno Total",
                     f"{total_return:.1f}%"
                 )
             
             with col4:
                 st.metric(
-                    "📈 Retorno Anual",
+                    "↗ Retorno Anual",
                     f"{annual_return*100:.1f}%"
                 )
             
@@ -873,21 +873,21 @@ with tab2:
             col1, col2, col3, col4 = st.columns(4)
             
             with col1:
-                st.metric("📉 Volatilidad Anual", f"{volatility:.1f}%")
+                st.metric("▼ Volatilidad Anual", f"{volatility:.1f}%")
             
             with col2:
                 color = "normal" if sharpe > 1 else "inverse"
                 st.metric("⚡ Ratio Sharpe", f"{sharpe:.2f}", delta_color=color)
             
             with col3:
-                st.metric("📉 Máxima Caída", f"{max_drawdown:.1f}%")
+                st.metric("▼ Máxima Caída", f"{max_drawdown:.1f}%")
             
             with col4:
-                st.metric("⚠️ VaR 95%", f"{var_95:.1f}%")
+                st.metric("△ VaR 95%", f"{var_95:.1f}%")
             
             # Comparación con benchmarks
             if show_benchmarks and benchmark_values is not None:
-                st.markdown("### 🏆 Comparación con Benchmarks")
+                st.markdown("### ◆ Comparación con Benchmarks")
                 
                 comparison_data = []
                 
@@ -921,7 +921,7 @@ with tab2:
                 st.dataframe(comparison_df, use_container_width=True)
             
             # Tabla de rendimientos anuales
-            st.markdown("### 📅 Rendimientos por Año")
+            st.markdown("### ▣ Rendimientos por Año")
             
             yearly_returns = portfolio_value.resample('Y').last().pct_change().dropna() * 100
             yearly_df = pd.DataFrame({
@@ -944,7 +944,7 @@ with tab2:
         st.info("👆 Primero completa el cuestionario en la pestaña 'Análisis de Perfil'")
 
 with tab3:
-    st.markdown("## 🔄 Rebalanceo del Portafolio")
+    st.markdown("## ⟲ Rebalanceo del Portafolio")
     
     if 'profile' in st.session_state:
         st.markdown("""
@@ -955,7 +955,7 @@ with tab3:
         portfolio = st.session_state['profile']['portfolio']
         
         # Simulador de portafolio actual vs objetivo
-        st.markdown("### 🎯 Estado Actual vs Objetivo")
+        st.markdown("### ● Estado Actual vs Objetivo")
         
         col1, col2 = st.columns(2)
         
@@ -989,21 +989,21 @@ with tab3:
             if abs(total_weight - 100) > 0.1:
                 st.warning(f"⚠️ Los pesos suman {total_weight:.1f}%. Deben sumar 100%")
             else:
-                st.success("✅ Los pesos suman 100%")
+                st.success("✓ Los pesos suman 100%")
         
         # Generar sugerencias de rebalanceo
         if abs(total_weight - 100) <= 0.1:
             suggestions = suggest_rebalancing(current_portfolio, portfolio)
             
             if suggestions:
-                st.markdown("### 📋 Sugerencias de Rebalanceo")
+                st.markdown("### ▢ Sugerencias de Rebalanceo")
                 for suggestion in suggestions:
                     st.markdown(f"• {suggestion}")
             else:
-                st.success("🎉 Tu portafolio está bien balanceado!")
+                st.success("✓ Tu portafolio está bien balanceado!")
         
         # Costo estimado de rebalanceo
-        st.markdown("### 💰 Estimación de Costos")
+        st.markdown("### $ Estimación de Costos")
         
         col1, col2, col3 = st.columns(3)
         
@@ -1022,18 +1022,18 @@ with tab3:
             total_spread = portfolio_value_for_rebalance * (spread_cost / 100)
             total_cost = total_commission + total_spread
             
-            st.metric("💸 Costo Total Estimado", f"${total_cost:.2f}")
+            st.metric("▼ Costo Total Estimado", f"${total_cost:.2f}")
             
             if total_cost / portfolio_value_for_rebalance > 0.02:  # Más del 2%
                 st.warning("⚠️ El costo de rebalanceo es alto (>2% del portafolio)")
             else:
-                st.success("✅ Costo de rebalanceo razonable")
+                st.success("✓ Costo de rebalanceo razonable")
     
     else:
         st.info("👆 Primero completa el cuestionario en la pestaña 'Análisis de Perfil'")
 
 with tab4:
-    st.markdown("## 📚 Información Detallada de los ETFs")
+    st.markdown("## ⊡ Información Detallada de los ETFs")
     
     # Agregar filtros
     col1, col2 = st.columns([1, 1])
@@ -1062,21 +1062,21 @@ with tab4:
             col1, col2 = st.columns([2, 1])
             
             with col1:
-                st.markdown(f"**📝 Descripción:** {info['descripcion']}")
-                st.markdown(f"**📊 Tipo de activo:** {info['tipo']}")
-                st.markdown(f"**⚠️ Nivel de riesgo:** {info['riesgo']}")
-                st.markdown(f"**📈 Rendimiento esperado:** {info['rendimiento_esperado']}")
+                st.markdown(f"**▪ Descripción:** {info['descripcion']}")
+                st.markdown(f"**▫ Tipo de activo:** {info['tipo']}")
+                st.markdown(f"**△ Nivel de riesgo:** {info['riesgo']}")
+                st.markdown(f"**↗ Rendimiento esperado:** {info['rendimiento_esperado']}")
                 
                 # Información adicional específica
                 if ticker == "AGG":
-                    st.markdown(f"**⏱️ Duración:** {info['duración']}")
-                    st.markdown(f"**💰 Yield:** {info['yield']}")
+                    st.markdown(f"**● Duración:** {info['duración']}")
+                    st.markdown(f"**$ Yield:** {info['yield']}")
                 elif ticker == "ACWI":
-                    st.markdown(f"**🌍 Cobertura:** {info['países']}, {info['empresas']}")
+                    st.markdown(f"**○ Cobertura:** {info['países']}, {info['empresas']}")
                 elif ticker == "VNQ":
-                    st.markdown(f"**💵 Dividend Yield:** {info['dividend_yield']}")
+                    st.markdown(f"**$ Dividend Yield:** {info['dividend_yield']}")
                 elif ticker == "GLD":
-                    st.markdown(f"**📊 Correlación:** {info['correlación']}")
+                    st.markdown(f"**▫ Correlación:** {info['correlación']}")
             
             with col2:
                 # Intentar obtener precio actual (con manejo de errores)
@@ -1101,9 +1101,9 @@ with tab4:
     
     # Glosario de términos
     st.markdown("---")
-    st.markdown("## 📖 Glosario de Términos Financieros")
+    st.markdown("## ⊡ Glosario de Términos Financieros")
     
-    with st.expander("📚 Ver Glosario Completo"):
+    with st.expander("⊡ Ver Glosario Completo"):
         glossary = {
             "ETF": "Exchange Traded Fund - Fondo cotizado que replica un índice",
             "Volatilidad": "Medida de la variabilidad de los precios",
@@ -1123,13 +1123,13 @@ with tab4:
 # Footer estilo AmberLatam
 st.markdown("""
 <div class="amber-footer">
-    <h3>⚠️ Disclaimer Importante</h3>
+    <h3>△ Disclaimer Importante</h3>
     <p>Esta herramienta tiene fines <strong>educativos e informativos únicamente</strong>. 
     No constituye asesoramiento financiero personalizado.</p>
     <p>Los rendimientos pasados no garantizan resultados futuros. 
     <strong>Consulta con un asesor financiero profesional</strong> antes de tomar decisiones de inversión.</p>
     <p style="margin-top: 15px; font-size: 0.8rem; color: var(--text-secondary);">
-        💎 Impulso Inversor - Desarrollado con tecnología moderna
+        ✨ Impulso Inversor - Desarrollado con tecnología moderna
     </p>
 </div>
 """, unsafe_allow_html=True)
