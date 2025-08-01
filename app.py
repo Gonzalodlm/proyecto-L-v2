@@ -115,7 +115,7 @@ def get_historical_data(tickers, start_date, end_date):
         try:
             status_text.text(f'Descargando datos para {ticker}...')
             stock = yf.Ticker(ticker)
-            hist = stock.history(start=start_date, end=end_date, progress=False)
+            hist = stock.history(start=start_date, end=end_date)
             
             if not hist.empty:
                 data[ticker] = hist['Close']
@@ -152,7 +152,7 @@ def get_benchmark_data(start_date, end_date):
     for ticker, name in benchmarks.items():
         try:
             stock = yf.Ticker(ticker)
-            hist = stock.history(start=start_date, end=end_date, progress=False)
+            hist = stock.history(start=start_date, end=end_date)
             if not hist.empty:
                 benchmark_data[name] = hist['Close']
         except:
