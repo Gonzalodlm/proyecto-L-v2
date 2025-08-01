@@ -19,84 +19,335 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# CSS personalizado mejorado
+# CSS estilo AmberLatam - Diseño minimalista y moderno
 st.markdown("""
 <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
+    
     .main .block-container {
-        padding-top: 1rem;
-        padding-bottom: 1rem;
+        padding-top: 2rem;
+        padding-bottom: 2rem;
+        max-width: 1200px;
+        font-family: 'Inter', sans-serif;
+    }
+    
+    /* Variables CSS */
+    :root {
+        --primary-orange: rgb(252, 117, 2);
+        --primary-blue: rgb(0, 109, 210);
+        --accent-green: rgb(105, 188, 116);
+        --accent-pink: rgb(204, 138, 196);
+        --neutral-dark: rgb(94, 94, 94);
+        --neutral-light: rgb(250, 250, 250);
+        --neutral-border: rgb(238, 238, 238);
+        --white: #ffffff;
+        --text-primary: #1a1a1a;
+        --text-secondary: #5e5e5e;
+    }
+    
+    /* Tipografía global */
+    .main {
+        font-family: 'Inter', sans-serif;
+        color: var(--text-primary);
+        line-height: 1.6;
+    }
+    
+    h1, h2, h3, h4, h5, h6 {
+        font-family: 'Inter', sans-serif;
+        font-weight: 600;
+        color: var(--text-primary);
+        margin-bottom: 0.5rem;
+    }
+    
+    /* Header principal */
+    .main-header {
+        text-align: center;
+        margin-bottom: 3rem;
+        padding: 2rem 0;
+        border-bottom: 1px solid var(--neutral-border);
+    }
+    
+    .main-title {
+        font-size: 3rem;
+        font-weight: 700;
+        color: var(--text-primary);
+        margin-bottom: 1rem;
+        background: linear-gradient(135deg, var(--primary-orange) 0%, var(--primary-blue) 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+    
+    .main-subtitle {
+        font-size: 1.25rem;
+        font-weight: 400;
+        color: var(--text-secondary);
+        margin-bottom: 0;
+    }
+    
+    /* Cards estilo AmberLatam */
+    .amber-card {
+        background: var(--white);
+        border: 1px solid var(--neutral-border);
+        border-radius: 12px;
+        padding: 2rem;
+        margin: 1rem 0;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+        transition: all 0.3s ease;
+    }
+    
+    .amber-card:hover {
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+        transform: translateY(-2px);
     }
     
     .metric-card {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        padding: 20px;
-        border-radius: 15px;
+        background: var(--white);
+        border: 1px solid var(--neutral-border);
+        border-radius: 12px;
+        padding: 1.5rem;
         text-align: center;
-        margin: 10px 0;
-        color: white;
-        box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+        margin: 0.5rem 0;
+        transition: all 0.3s ease;
     }
     
+    .metric-card:hover {
+        border-color: var(--primary-orange);
+        box-shadow: 0 4px 16px rgba(252, 117, 2, 0.1);
+    }
+    
+    .metric-value {
+        font-size: 2rem;
+        font-weight: 700;
+        color: var(--primary-orange);
+        margin-bottom: 0.5rem;
+    }
+    
+    .metric-label {
+        font-size: 0.875rem;
+        font-weight: 500;
+        color: var(--text-secondary);
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+    
+    /* ETF Cards */
     .etf-card {
-        background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-        padding: 15px;
-        border-radius: 15px;
-        margin: 10px 0;
-        color: white;
-        box-shadow: 0 8px 32px rgba(0,0,0,0.1);
-        transition: transform 0.3s ease;
+        background: var(--white);
+        border: 1px solid var(--neutral-border);
+        border-radius: 12px;
+        padding: 1.5rem;
+        margin: 1rem 0;
+        transition: all 0.3s ease;
     }
     
     .etf-card:hover {
-        transform: translateY(-5px);
+        border-color: var(--primary-blue);
+        box-shadow: 0 4px 16px rgba(0, 109, 210, 0.1);
     }
     
+    .etf-name {
+        font-size: 1.125rem;
+        font-weight: 600;
+        color: var(--text-primary);
+        margin-bottom: 0.5rem;
+    }
+    
+    .etf-weight {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: var(--primary-orange);
+        margin: 0.5rem 0;
+    }
+    
+    .etf-details {
+        font-size: 0.875rem;
+        color: var(--text-secondary);
+        margin: 0;
+    }
+    
+    /* Sidebar */
     .sidebar-card {
-        background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
-        padding: 15px;
-        border-radius: 15px;
-        margin: 10px 0;
-        color: white;
+        background: var(--white);
+        border: 1px solid var(--neutral-border);
+        border-radius: 12px;
+        padding: 1.5rem;
+        margin: 1rem 0;
         text-align: center;
     }
     
+    .sidebar-title {
+        font-size: 0.875rem;
+        font-weight: 500;
+        color: var(--text-secondary);
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        margin-bottom: 0.5rem;
+    }
+    
+    .sidebar-value {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: var(--primary-orange);
+        margin-bottom: 0.25rem;
+    }
+    
+    .sidebar-level {
+        font-size: 0.875rem;
+        color: var(--text-secondary);
+    }
+    
+    /* Alerts estilo AmberLatam */
     .alert-success {
-        background-color: #d4edda;
-        border: 1px solid #c3e6cb;
-        color: #155724;
-        padding: 12px;
+        background-color: rgba(105, 188, 116, 0.1);
+        border: 1px solid var(--accent-green);
+        color: #2d5016;
+        padding: 1rem;
         border-radius: 8px;
-        margin: 10px 0;
+        margin: 1rem 0;
+        font-size: 0.875rem;
     }
     
     .alert-warning {
-        background-color: #fff3cd;
-        border: 1px solid #ffeaa7;
-        color: #856404;
-        padding: 12px;
+        background-color: rgba(252, 117, 2, 0.1);
+        border: 1px solid var(--primary-orange);
+        color: #8b4513;
+        padding: 1rem;
         border-radius: 8px;
-        margin: 10px 0;
+        margin: 1rem 0;
+        font-size: 0.875rem;
     }
     
-    .alert-danger {
-        background-color: #f8d7da;
-        border: 1px solid #f5c6cb;
-        color: #721c24;
-        padding: 12px;
+    .alert-info {
+        background-color: rgba(0, 109, 210, 0.1);
+        border: 1px solid var(--primary-blue);
+        color: #1e40af;
+        padding: 1rem;
         border-radius: 8px;
-        margin: 10px 0;
+        margin: 1rem 0;
+        font-size: 0.875rem;
     }
     
+    /* Tabs estilo AmberLatam */
     .stTabs [data-baseweb="tab-list"] {
-        gap: 8px;
+        gap: 0;
+        background-color: var(--neutral-light);
+        border-radius: 8px;
+        padding: 4px;
+        margin-bottom: 2rem;
     }
     
     .stTabs [data-baseweb="tab"] {
-        height: 50px;
-        padding-left: 20px;
-        padding-right: 20px;
-        background-color: #f0f2f6;
-        border-radius: 15px;
+        height: 48px;
+        padding: 0 1.5rem;
+        background-color: transparent;
+        border-radius: 6px;
+        font-family: 'Inter', sans-serif;
+        font-weight: 500;
+        color: var(--text-secondary);
+        border: none;
+        transition: all 0.3s ease;
+    }
+    
+    .stTabs [data-baseweb="tab"]:hover {
+        background-color: var(--white);
+        color: var(--text-primary);
+    }
+    
+    .stTabs [data-baseweb="tab"][aria-selected="true"] {
+        background-color: var(--white);
+        color: var(--primary-orange);
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+    }
+    
+    /* Botones */
+    .stButton > button {
+        background: var(--primary-orange);
+        color: white;
+        border: none;
+        border-radius: 8px;
+        padding: 0.75rem 2rem;
+        font-family: 'Inter', sans-serif;
+        font-weight: 500;
+        font-size: 0.875rem;
+        transition: all 0.3s ease;
+    }
+    
+    .stButton > button:hover {
+        background: #e6730a;
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(252, 117, 2, 0.3);
+    }
+    
+    /* Inputs y selectbox */
+    .stSelectbox > div > div {
+        border: 1px solid var(--neutral-border);
+        border-radius: 8px;
+        font-family: 'Inter', sans-serif;
+    }
+    
+    .stSlider > div > div > div {
+        color: var(--primary-orange);
+    }
+    
+    /* Métricas principales */
+    .main-metrics {
+        display: flex;
+        justify-content: space-between;
+        margin: 2rem 0;
+        gap: 1rem;
+    }
+    
+    .main-metric {
+        flex: 1;
+        text-align: center;
+        padding: 1.5rem;
+        background: var(--white);
+        border: 1px solid var(--neutral-border);
+        border-radius: 12px;
+        transition: all 0.3s ease;
+    }
+    
+    .main-metric:hover {
+        border-color: var(--primary-orange);
+        box-shadow: 0 4px 16px rgba(252, 117, 2, 0.1);
+    }
+    
+    /* Footer */
+    .amber-footer {
+        background: var(--neutral-light);
+        border: 1px solid var(--neutral-border);
+        border-radius: 12px;
+        padding: 2rem;
+        margin: 3rem 0 1rem 0;
+        text-align: center;
+    }
+    
+    .amber-footer h3 {
+        color: var(--text-primary);
+        margin-bottom: 1rem;
+    }
+    
+    .amber-footer p {
+        color: var(--text-secondary);
+        font-size: 0.875rem;
+        line-height: 1.6;
+        margin-bottom: 1rem;
+    }
+    
+    /* Responsivo */
+    @media (max-width: 768px) {
+        .main-title {
+            font-size: 2rem;
+        }
+        
+        .main-metrics {
+            flex-direction: column;
+        }
+        
+        .amber-card {
+            padding: 1.5rem;
+        }
     }
 </style>
 """, unsafe_allow_html=True)
@@ -306,9 +557,9 @@ with st.sidebar:
         profile = st.session_state['profile']
         st.markdown(f"""
         <div class="sidebar-card">
-            <h3 style="margin: 0;">Tu Perfil</h3>
-            <h2 style="margin: 5px 0;">{profile['label']}</h2>
-            <p style="margin: 0;">Nivel de riesgo: {profile['bucket'] + 1}/5</p>
+            <div class="sidebar-title">Tu Perfil de Inversión</div>
+            <div class="sidebar-value">{profile['label']}</div>
+            <div class="sidebar-level">Nivel de riesgo: {profile['bucket'] + 1}/5</div>
         </div>
         """, unsafe_allow_html=True)
         
@@ -317,7 +568,13 @@ with st.sidebar:
         if alerts:
             st.markdown("### ⚠️ Alertas")
             for alert in alerts:
-                alert_class = f"alert-{alert['type']}"
+                alert_type = alert['type']
+                if alert_type == 'warning':
+                    alert_class = "alert-warning"
+                elif alert_type == 'info':
+                    alert_class = "alert-info"
+                else:
+                    alert_class = "alert-success"
                 st.markdown(f'<div class="{alert_class}">{alert["message"]}</div>', unsafe_allow_html=True)
     
     st.markdown("---")
@@ -342,8 +599,12 @@ with st.sidebar:
         )
 
 # ========== INTERFAZ PRINCIPAL ==========
-st.title("💎 Impulso Inversor")
-st.subheader("Tu asesor de inversiones inteligente y personalizado")
+st.markdown("""
+<div class="main-header">
+    <h1 class="main-title">💎 Impulso Inversor</h1>
+    <p class="main-subtitle">Tu asesor de inversiones inteligente y personalizado</p>
+</div>
+""", unsafe_allow_html=True)
 
 # Métricas rápidas en la parte superior
 if 'profile' in st.session_state:
@@ -442,12 +703,14 @@ with tab1:
                 bucket, total_score = score_user(answers)
                 label = bucket_to_label[bucket]
                 
-                # Mostrar resultado con animación
+                # Mostrar resultado con el nuevo diseño
                 st.markdown(f"""
-                <div class="metric-card">
-                    <h2 style="margin: 0;">Perfil: {label}</h2>
-                    <p style="font-size: 1.2rem; margin: 10px 0;">Puntaje: {total_score}/50</p>
-                    <p style="margin: 0;">Nivel de riesgo: {bucket + 1}/5</p>
+                <div class="amber-card">
+                    <div style="text-align: center;">
+                        <div class="sidebar-title">Tu Perfil de Riesgo</div>
+                        <div class="sidebar-value">{label}</div>
+                        <div class="sidebar-level">Puntaje: {total_score}/50 - Nivel {bucket + 1}/5</div>
+                    </div>
                 </div>
                 """, unsafe_allow_html=True)
                 
@@ -485,9 +748,9 @@ with tab1:
                 info = ETF_INFO[ticker]
                 st.markdown(f"""
                 <div class="etf-card">
-                    <h4 style="margin: 0;">{info['nombre']} ({ticker})</h4>
-                    <p style="margin: 5px 0; font-size: 1.2rem; font-weight: bold;">{weight*100:.0f}%</p>
-                    <p style="margin: 0; font-size: 0.9rem;">{info['tipo']} - Riesgo {info['riesgo']}</p>
+                    <div class="etf-name">{info['nombre']} ({ticker})</div>
+                    <div class="etf-weight">{weight*100:.0f}%</div>
+                    <div class="etf-details">{info['tipo']} - Riesgo {info['riesgo']}</div>
                 </div>
                 """, unsafe_allow_html=True)
         
@@ -857,17 +1120,16 @@ with tab4:
         for term, definition in glossary.items():
             st.markdown(f"**{term}:** {definition}")
 
-# Footer mejorado
-st.markdown("---")
+# Footer estilo AmberLatam
 st.markdown("""
-<div style="text-align: center; padding: 20px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 15px; color: white; margin: 20px 0;">
+<div class="amber-footer">
     <h3>⚠️ Disclaimer Importante</h3>
     <p>Esta herramienta tiene fines <strong>educativos e informativos únicamente</strong>. 
     No constituye asesoramiento financiero personalizado.</p>
     <p>Los rendimientos pasados no garantizan resultados futuros. 
     <strong>Consulta con un asesor financiero profesional</strong> antes de tomar decisiones de inversión.</p>
-    <p style="margin-top: 15px; font-size: 0.9rem;">
-        💎 Impulso Inversor - Desarrollado con ❤️ usando Streamlit
+    <p style="margin-top: 15px; font-size: 0.8rem; color: var(--text-secondary);">
+        💎 Impulso Inversor - Desarrollado con tecnología moderna
     </p>
 </div>
 """, unsafe_allow_html=True)
