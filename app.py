@@ -629,6 +629,39 @@ if 'profile' in st.session_state:
 
 st.markdown("---")
 
+# Sección educativa prominente
+with st.expander("🎓 ¿Por qué Impulso Inversor utiliza ETFs?", expanded=False):
+    col1, col2 = st.columns([1, 1])
+    
+    with col1:
+        st.markdown("""
+        <div class="amber-card">
+            <h4>🏆 Ventajas Clave de los ETFs</h4>
+            <ul>
+                <li><strong>Diversificación instantánea</strong>: Un ETF = cientos de activos</li>
+                <li><strong>Costos ultra bajos</strong>: 0.03% vs 2-3% fondos tradicionales</li>
+                <li><strong>Transparencia total</strong>: Sabes exactamente qué posees</li>
+                <li><strong>Acceso global</strong>: Invierte en todo el mundo fácilmente</li>
+                <li><strong>Liquidez</strong>: Compra/vende en cualquier momento</li>
+            </ul>
+        </div>
+        """, unsafe_allow_html=True)
+    
+    with col2:
+        st.markdown("""
+        <div class="amber-card">
+            <h4>📊 Nuestra Selección Estratégica</h4>
+            <ul>
+                <li><strong>BIL</strong>: Efectivo seguro (0-5% riesgo)</li>
+                <li><strong>AGG</strong>: Bonos estables (+10,000 bonos)</li>
+                <li><strong>ACWI</strong>: Crecimiento global (+2,900 empresas)</li>
+                <li><strong>VNQ</strong>: Bienes raíces (+160 propiedades)</li>
+                <li><strong>GLD</strong>: Oro físico (protección)</li>
+            </ul>
+            <p><strong>🎯 Resultado:</strong> Portafolio completo y diversificado globalmente</p>
+        </div>
+        """, unsafe_allow_html=True)
+
 # Tabs principales
 tab1, tab2, tab3, tab4 = st.tabs(["▲ Análisis de Perfil", "↗ Simulación Histórica", "⟲ Rebalanceo", "⊡ Información ETFs"])
 
@@ -753,6 +786,77 @@ with tab1:
                     <div class="etf-details">{info['tipo']} - Riesgo {info['riesgo']}</div>
                 </div>
                 """, unsafe_allow_html=True)
+        
+        # Explicación del portafolio recomendado
+        with st.expander("💡 ¿Por qué este portafolio es perfecto para ti?", expanded=False):
+            st.markdown(f"""
+            <div class="amber-card">
+                <h4>🎯 Justificación de tu portafolio <strong>{st.session_state['profile']['label']}</strong>:</h4>
+                
+                **📊 Composición actual:**
+            """, unsafe_allow_html=True)
+            
+            # Mostrar explicación personalizada según el bucket
+            bucket = st.session_state['profile']['bucket']
+            
+            if bucket == 0:  # Conservador
+                st.markdown("""
+                - **30% Efectivo (BIL)**: Liquidez inmediata para emergencias
+                - **50% Bonos (AGG)**: Ingresos estables y predecibles
+                - **10% Acciones (ACWI)**: Crecimiento mínimo pero presente
+                - **10% Oro (GLD)**: Protección adicional del capital
+                
+                **🛡️ Enfoque:** Máxima preservación del capital con crecimiento muy conservador.
+                **✅ Ideal para:** Jubilados, inversores cerca del retiro, o personas que priorizan seguridad absoluta.
+                """)
+            elif bucket == 1:  # Moderado
+                st.markdown("""
+                - **15% Efectivo (BIL)**: Reserva de emergencia
+                - **35% Bonos (AGG)**: Base estable de ingresos
+                - **30% Acciones (ACWI)**: Crecimiento balanceado
+                - **10% REITs (VNQ)**: Diversificación en bienes raíces
+                - **10% Oro (GLD)**: Cobertura contra volatilidad
+                
+                **⚖️ Enfoque:** Balance perfecto entre seguridad y crecimiento.
+                **✅ Ideal para:** Inversores de mediana edad que buscan estabilidad con algo de crecimiento.
+                """)
+            elif bucket == 2:  # Balanceado
+                st.markdown("""
+                - **5% Efectivo (BIL)**: Liquidez mínima necesaria
+                - **25% Bonos (AGG)**: Estabilización del portafolio
+                - **45% Acciones (ACWI)**: Motor principal de crecimiento
+                - **15% REITs (VNQ)**: Diversificación e ingresos por dividendos
+                - **10% Oro (GLD)**: Protección en crisis
+                
+                **⚖️ Enfoque:** Crecimiento sólido con riesgo controlado.
+                **✅ Ideal para:** Inversores con horizonte de 5-10 años que toleran cierta volatilidad.
+                """)
+            elif bucket == 3:  # Crecimiento
+                st.markdown("""
+                - **15% Bonos (AGG)**: Estabilidad mínima
+                - **65% Acciones (ACWI)**: Máximo potencial de crecimiento
+                - **15% REITs (VNQ)**: Diversificación y dividendos
+                - **5% Oro (GLD)**: Cobertura mínima
+                
+                **📈 Enfoque:** Crecimiento agresivo a largo plazo.
+                **✅ Ideal para:** Inversores jóvenes con horizonte +10 años y alta tolerancia al riesgo.
+                """)
+            else:  # Agresivo
+                st.markdown("""
+                - **80% Acciones (ACWI)**: Máximo crecimiento posible
+                - **15% REITs (VNQ)**: Diversificación en sector inmobiliario
+                - **5% Oro (GLD)**: Cobertura mínima contra crisis extremas
+                
+                **🚀 Enfoque:** Crecimiento máximo, volatilidad alta.
+                **✅ Ideal para:** Inversores muy jóvenes, con horizontes +15 años y máxima tolerancia al riesgo.
+                """)
+            
+            st.markdown("""
+            **🎯 Resultado esperado:** Este portafolio está diseñado específicamente para tu perfil de riesgo, 
+            edad, horizonte de inversión y objetivos financieros. La combinación de ETFs te da acceso a 
+            miles de activos globales con una sola inversión.
+            </div>
+            """, unsafe_allow_html=True)
         
         # Descargar CSV mejorado
         pf_df = pd.DataFrame([
@@ -1034,6 +1138,80 @@ with tab3:
 
 with tab4:
     st.markdown("## ⊡ Información Detallada de los ETFs")
+    
+    # Sección educativa sobre ETFs
+    with st.expander("▲ ¿Por qué elegimos ETFs para tu portafolio?", expanded=False):
+        st.markdown("""
+        <div class="amber-card">
+            <h4>Ventajas de los ETFs sobre otros instrumentos financieros:</h4>
+            
+            **🆚 ETFs vs Acciones Individuales:**
+            - ✓ **Diversificación instantánea**: Un solo ETF contiene cientos de acciones
+            - ✓ **Menor riesgo**: No dependes del rendimiento de una sola empresa
+            - ✓ **Gestión profesional**: Siguen índices creados por expertos
+            
+            **🆚 ETFs vs Fondos Mutuos:**
+            - ✓ **Menores comisiones**: Costos típicos de 0.03%-0.75% vs 1%-3% de fondos activos
+            - ✓ **Transparencia total**: Sabes exactamente qué tienes en tu portafolio
+            - ✓ **Flexibilidad**: Se pueden comprar/vender en cualquier momento del día
+            
+            **🆚 ETFs vs Bonos Individuales:**
+            - ✓ **Acceso institucional**: Accedes a bonos que normalmente requieren $100,000+ mínimo
+            - ✓ **Diversificación**: Miles de bonos en un solo instrumento
+            - ✓ **Liquidez**: Más fácil de comprar/vender que bonos individuales
+            
+            **🆚 ETFs vs Criptomonedas:**
+            - ✓ **Estabilidad**: Respaldados por activos reales con historial comprobado
+            - ✓ **Regulación**: Supervisados por autoridades financieras
+            - ✓ **Volatilidad controlada**: Menos fluctuaciones extremas
+        </div>
+        """, unsafe_allow_html=True)
+    
+    # Resumen de instrumentos elegidos
+    with st.expander("◆ Resumen de los 5 ETFs seleccionados", expanded=False):
+        st.markdown("""
+        <div class="amber-card">
+            <h4>Nuestra selección estratégica de ETFs:</h4>
+            
+            **▦ BIL - SPDR Bloomberg 1-3 Month T-Bill ETF**
+            - 🎯 **Propósito**: Efectivo y liquidez inmediata
+            - 📊 **Contenido**: Letras del Tesoro de EE.UU. a 1-3 meses
+            - ✓ **Ventaja**: Máxima seguridad, disponibilidad inmediata de fondos
+            
+            **▪ AGG - iShares Core U.S. Aggregate Bond ETF**
+            - 🎯 **Propósito**: Estabilidad e ingresos regulares
+            - 📊 **Contenido**: +10,000 bonos del gobierno y corporativos de EE.UU.
+            - ✓ **Ventaja**: Diversificación masiva en renta fija, pagos de intereses estables
+            
+            **▫ ACWI - iShares MSCI ACWI ETF**
+            - 🎯 **Propósito**: Crecimiento a largo plazo y diversificación global
+            - 📊 **Contenido**: +2,900 acciones de 47 países (desarrollados y emergentes)
+            - ✓ **Ventaja**: Exposición al crecimiento económico mundial en un solo ETF
+            
+            **▫ VNQ - Vanguard Real Estate ETF**
+            - 🎯 **Propósito**: Protección contra inflación y diversificación
+            - 📊 **Contenido**: +160 REITs de centros comerciales, oficinas, apartamentos
+            - ✓ **Ventaja**: Ingresos por dividendos altos, correlación baja con acciones
+            
+            **◇ GLD - SPDR Gold Shares**
+            - 🎯 **Propósito**: Cobertura contra crisis y diversificación
+            - 📊 **Contenido**: Oro físico almacenado en bóvedas seguras
+            - ✓ **Ventaja**: Protección en tiempos de incertidumbre, preservación de valor
+            
+            ---
+            
+            **🎯 Estrategia de combinación:**
+            
+            Esta selección te permite acceder a **TODA la economía global** con solo 5 instrumentos:
+            - **Liquidez** (BIL): Para emergencias y oportunidades
+            - **Estabilidad** (AGG): Para ingresos predecibles
+            - **Crecimiento** (ACWI): Para multiplicar tu capital
+            - **Inmuebles** (VNQ): Para diversificar y generar ingresos
+            - **Protección** (GLD): Para preservar valor en crisis
+            
+            **💡 Resultado**: Un portafolio completo, diversificado globalmente, con costos bajos y gestión simple.
+        </div>
+        """, unsafe_allow_html=True)
     
     # Agregar filtros
     col1, col2 = st.columns([1, 1])
