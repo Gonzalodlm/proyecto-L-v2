@@ -191,8 +191,8 @@ st.markdown("""
     /* Header principal */
     .main-header {
         text-align: center;
-        margin-bottom: 3rem;
-        padding: 2rem 0;
+        margin-bottom: 1rem;
+        padding: 1rem 0;
         border-bottom: 1px solid var(--neutral-border);
     }
     
@@ -728,23 +728,28 @@ with st.sidebar:
         )
 
 # ========== INTERFAZ PRINCIPAL ==========
-# Header con logo centrado
-col1, col2 = st.columns([1, 4])
+# Header con logo y título en línea horizontal
+col1, col2, col3 = st.columns([1, 1, 3])
+
 with col1:
-    st.markdown('<div style="display: flex; justify-content: center; align-items: center; height: 100px;">', unsafe_allow_html=True)
-    try:
-        st.image("Logo Impulso Inversor en fondo oscuro.png", width=120)
-    except Exception as e:
-        st.error(f"Error cargando logo: {e}")
-        st.write("Archivos disponibles:", [f for f in ["Logo Impulso Inversor en fondo oscuro.png", "logo.svg"] if f])
-    st.markdown('</div>', unsafe_allow_html=True)
+    st.write("")  # Espacio en blanco para centrar
+
 with col2:
+    st.image("Logo Impulso Inversor en fondo oscuro.png", width=120)
+
+with col3:
     st.markdown("""
-    <div class="main-header" style="display: flex; flex-direction: column; justify-content: center; height: 100px;">
-        <h1 class="main-title">Impulso Inversor</h1>
-        <p class="main-subtitle">Tu asesor de inversiones inteligente y personalizado</p>
+    <div style="display: flex; flex-direction: column; justify-content: center; height: 120px; margin-left: -2rem;">
+        <h1 style="font-size: 3rem; font-weight: 700; margin: 0; background: linear-gradient(135deg, rgb(252, 117, 2) 0%, rgb(0, 109, 210) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; font-family: 'Inter', sans-serif;">
+            Impulso Inversor
+        </h1>
+        <p style="font-size: 1.25rem; color: #5e5e5e; margin: 0.5rem 0 0 0; font-family: 'Inter', sans-serif;">
+            Tu asesor de inversiones inteligente y personalizado
+        </p>
     </div>
     """, unsafe_allow_html=True)
+
+st.markdown('<div style="border-bottom: 1px solid var(--neutral-border); margin: 2rem 0;"></div>', unsafe_allow_html=True)
 
 # Métricas rápidas en la parte superior
 if 'profile' in st.session_state:
