@@ -740,7 +740,7 @@ with col2:
 with col3:
     st.markdown("""
     <div style="display: flex; flex-direction: column; justify-content: center; height: 120px; margin-left: -2rem;">
-        <h1 style="font-size: 3rem; font-weight: 700; margin: 0; background: linear-gradient(135deg, rgb(252, 117, 2) 0%, rgb(0, 109, 210) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; font-family: 'Inter', sans-serif;">
+        <h1 style="font-size: 3rem; font-weight: 700; margin: 0; color: #D4AF37; font-family: 'Inter', sans-serif;">
             Impulso Inversor
         </h1>
         <p style="font-size: 1.25rem; color: #5e5e5e; margin: 0.5rem 0 0 0; font-family: 'Inter', sans-serif;">
