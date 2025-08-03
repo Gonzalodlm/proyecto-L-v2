@@ -728,13 +728,15 @@ with st.sidebar:
         )
 
 # ========== INTERFAZ PRINCIPAL ==========
-# Header con logo
+# Header con logo centrado
 col1, col2 = st.columns([1, 4])
 with col1:
+    st.markdown('<div style="display: flex; justify-content: center; align-items: center; height: 100px;">', unsafe_allow_html=True)
     st.image("logo.svg", width=120)
+    st.markdown('</div>', unsafe_allow_html=True)
 with col2:
     st.markdown("""
-    <div class="main-header">
+    <div class="main-header" style="display: flex; flex-direction: column; justify-content: center; height: 100px;">
         <h1 class="main-title">Impulso Inversor</h1>
         <p class="main-subtitle">Tu asesor de inversiones inteligente y personalizado</p>
     </div>
