@@ -728,12 +728,17 @@ with st.sidebar:
         )
 
 # ========== INTERFAZ PRINCIPAL ==========
-st.markdown("""
-<div class="main-header">
-    <h1 class="main-title">✨ Impulso Inversor</h1>
-    <p class="main-subtitle">Tu asesor de inversiones inteligente y personalizado</p>
-</div>
-""", unsafe_allow_html=True)
+# Header con logo
+col1, col2 = st.columns([1, 4])
+with col1:
+    st.image("logo.svg", width=120)
+with col2:
+    st.markdown("""
+    <div class="main-header">
+        <h1 class="main-title">Impulso Inversor</h1>
+        <p class="main-subtitle">Tu asesor de inversiones inteligente y personalizado</p>
+    </div>
+    """, unsafe_allow_html=True)
 
 # Métricas rápidas en la parte superior
 if 'profile' in st.session_state:

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="400" height="200" xmlns="http://www.w3.org/2000/svg">
+  <!-- Fondo negro -->
+  <rect width="400" height="200" fill="black"/>
+  
+  <!-- Definir gradiente dorado -->
+  <defs>
+    <linearGradient id="goldGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#B8860B;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#FFD700;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#FFF8DC;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Título principal -->
+  <text x="200" y="80" font-family="Arial, sans-serif" font-size="32" font-weight="bold" 
+        text-anchor="middle" fill="url(#goldGradient)">IMPULSO INVERSOR</text>
+  
+  <!-- Subtítulo -->
+  <text x="200" y="105" font-family="Arial, sans-serif" font-size="14" 
+        text-anchor="middle" fill="#FFF8DC">Tu asesor inteligente</text>
+  
+  <!-- Grid de fondo para la gráfica -->
+  <g stroke="#333333" stroke-width="1" opacity="0.3">
+    <line x1="50" y1="130" x2="350" y2="130"/>
+    <line x1="50" y1="150" x2="350" y2="150"/>
+    <line x1="50" y1="170" x2="350" y2="170"/>
+  </g>
+  
+  <!-- Gráfica creciente -->
+  <polyline points="50,170 90,165 130,155 170,150 210,140 250,130 290,125 330,120" 
+            stroke="#FFD700" stroke-width="3" fill="none"/>
+  
+  <!-- Puntos de la gráfica -->
+  <circle cx="50" cy="170" r="3" fill="#FFF8DC" stroke="#FFD700"/>
+  <circle cx="90" cy="165" r="3" fill="#FFF8DC" stroke="#FFD700"/>
+  <circle cx="130" cy="155" r="3" fill="#FFF8DC" stroke="#FFD700"/>
+  <circle cx="170" cy="150" r="3" fill="#FFF8DC" stroke="#FFD700"/>
+  <circle cx="210" cy="140" r="3" fill="#FFF8DC" stroke="#FFD700"/>
+  <circle cx="250" cy="130" r="3" fill="#FFF8DC" stroke="#FFD700"/>
+  <circle cx="290" cy="125" r="3" fill="#FFF8DC" stroke="#FFD700"/>
+  <circle cx="330" cy="120" r="3" fill="#FFF8DC" stroke="#FFD700"/>
+  
+  <!-- Flecha de crecimiento -->
+  <polygon points="360,115 355,125 365,125" fill="#FFD700"/>
+  <line x1="360" y1="115" x2="360" y2="125" stroke="#FFD700" stroke-width="2"/>
+  
+  <!-- Símbolo de dinero/inversión -->
+  <text x="370" y="140" font-family="Arial, sans-serif" font-size="18" 
+        fill="#FFD700">$</text>
+  
+  <!-- Efecto de brillo -->
+  <ellipse cx="200" cy="60" rx="150" ry="5" fill="#FFD700" opacity="0.2"/>
+</svg>
