@@ -732,7 +732,11 @@ with st.sidebar:
 col1, col2 = st.columns([1, 4])
 with col1:
     st.markdown('<div style="display: flex; justify-content: center; align-items: center; height: 100px;">', unsafe_allow_html=True)
-    st.image("Logo Impulso Inversor en fondo oscuro.png", width=120)
+    try:
+        st.image("Logo Impulso Inversor en fondo oscuro.png", width=120)
+    except Exception as e:
+        st.error(f"Error cargando logo: {e}")
+        st.write("Archivos disponibles:", [f for f in ["Logo Impulso Inversor en fondo oscuro.png", "logo.svg"] if f])
     st.markdown('</div>', unsafe_allow_html=True)
 with col2:
     st.markdown("""
