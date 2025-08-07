@@ -10,8 +10,8 @@ from flask_jwt_extended import (
 from flasgger import swag_from
 import re
 
-from app import db, jwt
-from app.models.user import User
+from .. import db, jwt
+from ..models.user import User
 
 auth_bp = Blueprint('auth', __name__)
 

@@ -6,11 +6,11 @@ from flask_jwt_extended import jwt_required, get_jwt_identity
 from flasgger import swag_from
 from datetime import datetime
 
-from app import db
-from app.models.user import User
-from app.models.risk_profile import RiskProfile
-from app.models.portfolio import Portfolio
-from app.services.etf_service import ETFService
+from .. import db
+from ..models.user import User
+from ..models.risk_profile import RiskProfile
+from ..models.portfolio import Portfolio
+from ..services.etf_service import ETFService
 
 portfolios_bp = Blueprint('portfolios', __name__)
 

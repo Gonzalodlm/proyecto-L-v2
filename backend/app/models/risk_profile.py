@@ -3,7 +3,7 @@ Risk Profile model for storing user risk assessment results
 """
 from datetime import datetime
 from sqlalchemy.dialects.postgresql import JSON
-from app import db
+from .. import db
 
 class RiskProfile(db.Model):
     __tablename__ = 'risk_profiles'

@@ -5,10 +5,10 @@ from flask import Blueprint, jsonify, request
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from flasgger import swag_from
 
-from app import db
-from app.models.user import User
-from app.models.risk_profile import RiskProfile
-from app.models.portfolio import Portfolio
+from .. import db
+from ..models.user import User
+from ..models.risk_profile import RiskProfile
+from ..models.portfolio import Portfolio
 
 analysis_bp = Blueprint('analysis', __name__)
 

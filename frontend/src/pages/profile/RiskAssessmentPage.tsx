@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
@@ -7,11 +7,10 @@ import { ChevronLeft, ChevronRight, Target, TrendingUp } from 'lucide-react';
 
 import { Card, CardHeader, CardContent } from '../../components/ui/Card';
 import { Button } from '../../components/ui/Button';
-import { Input } from '../../components/ui/Input';
 import { Select } from '../../components/forms/Select';
 import { Layout } from '../../components/layout/Layout';
 import { api } from '../../services/api';
-import { QuestionnaireAnswers, RISK_BUCKETS } from '../../types';
+import { RISK_BUCKETS } from '../../types';
 
 // Validation schema
 const riskAssessmentSchema = z.object({

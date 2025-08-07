@@ -3,7 +3,7 @@ Portfolio model for storing user portfolio allocations and performance
 """
 from datetime import datetime
 from sqlalchemy.dialects.postgresql import JSON
-from app import db
+from .. import db
 
 class Portfolio(db.Model):
     __tablename__ = 'portfolios'
@@ -95,7 +95,7 @@ class Portfolio(db.Model):
     
     def get_allocation_breakdown(self):
         """Get detailed breakdown of allocations with ETF info"""
-        from app.services.etf_service import ETFService
+        from ..services.etf_service import ETFService
         
         breakdown = []
         for ticker, weight in (self.allocations or {}).items():

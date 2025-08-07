@@ -5,7 +5,7 @@ from flask import Blueprint, jsonify, request
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from flasgger import swag_from
 
-from app.services.etf_service import ETFService
+from ..services.etf_service import ETFService
 
 etfs_bp = Blueprint('etfs', __name__)
 
