@@ -48,12 +48,22 @@ class User(db.Model):
     @property
     def current_risk_profile(self):
         """Get the most recent risk profile"""
-        return self.risk_profiles.order_by(RiskProfile.created_at.desc()).first()
+        try:
+            if self.risk_profiles and len(self.risk_profiles) > 0:
+                return sorted(self.risk_profiles, key=lambda x: x.created_at, reverse=True)[0]
+        except:
+            pass
+        return None
     
     @property
     def current_portfolio(self):
         """Get the most recent portfolio"""
-        return self.portfolios.order_by(Portfolio.created_at.desc()).first()
+        try:
+            if self.portfolios and len(self.portfolios) > 0:
+                return sorted(self.portfolios, key=lambda x: x.created_at, reverse=True)[0]
+        except:
+            pass
+        return None
     
     def to_dict(self, include_sensitive=False):
         """Convert user to dictionary"""
@@ -66,13 +76,20 @@ class User(db.Model):
             'is_active': self.is_active,
             'created_at': self.created_at.isoformat(),
             'updated_at': self.updated_at.isoformat(),
-            'has_risk_profile': bool(self.current_risk_profile),
-            'has_portfolio': bool(self.current_portfolio)
+            'has_risk_profile': False,
+            'has_portfolio': False
         }
         
         if include_sensitive:
-            data['risk_profile'] = self.current_risk_profile.to_dict() if self.current_risk_profile else None
-            data['portfolio'] = self.current_portfolio.to_dict() if self.current_portfolio else None
+            try:
+                data['risk_profile'] = self.current_risk_profile.to_dict() if self.current_risk_profile else None
+            except:
+                data['risk_profile'] = None
+            
+            try:
+                data['portfolio'] = self.current_portfolio.to_dict() if self.current_portfolio else None
+            except:
+                data['portfolio'] = None
             
         return data
     
