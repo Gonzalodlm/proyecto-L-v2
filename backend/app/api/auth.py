@@ -30,17 +30,8 @@ def validate_email(email):
 
 def validate_password(password):
     """Validate password strength"""
-    if len(password) < 8:
-        return False, "La contraseña debe tener al menos 8 caracteres"
-    
-    if not re.search(r'[A-Z]', password):
-        return False, "La contraseña debe contener al menos una mayúscula"
-    
-    if not re.search(r'[a-z]', password):
-        return False, "La contraseña debe contener al menos una minúscula"
-    
-    if not re.search(r'\d', password):
-        return False, "La contraseña debe contener al menos un número"
+    if len(password) < 6:
+        return False, "La contraseña debe tener al menos 6 caracteres"
     
     return True, "Contraseña válida"
 
@@ -133,8 +124,8 @@ def register():
         db.session.commit()
         
         # Create tokens
-        access_token = create_access_token(identity=new_user.id)
-        refresh_token = create_refresh_token(identity=new_user.id)
+        access_token = create_access_token(identity=str(new_user.id))
+        refresh_token = create_refresh_token(identity=str(new_user.id))
         
         return jsonify({
             'success': True,
@@ -211,8 +202,8 @@ def login():
             }), 401
         
         # Create tokens
-        access_token = create_access_token(identity=user.id)
-        refresh_token = create_refresh_token(identity=user.id)
+        access_token = create_access_token(identity=str(user.id))
+        refresh_token = create_refresh_token(identity=str(user.id))
         
         return jsonify({
             'success': True,
@@ -243,7 +234,7 @@ def refresh():
         description: Token refreshed successfully
     """
     try:
-        user_id = get_jwt_identity()
+        user_id = int(get_jwt_identity())
         
         # Verify user still exists and is active
         user = User.query.get(user_id)
@@ -254,7 +245,7 @@ def refresh():
             }), 401
         
         # Create new access token
-        new_access_token = create_access_token(identity=user_id)
+        new_access_token = create_access_token(identity=str(user_id))
         
         return jsonify({
             'success': True,
@@ -311,7 +302,7 @@ def get_profile():
         description: User not found
     """
     try:
-        user_id = get_jwt_identity()
+        user_id = int(get_jwt_identity())
         user = User.query.get(user_id)
         
         if not user:
@@ -354,7 +345,7 @@ def update_profile():
         description: Profile updated successfully
     """
     try:
-        user_id = get_jwt_identity()
+        user_id = int(get_jwt_identity())
         user = User.query.get(user_id)
         
         if not user:
@@ -418,7 +409,7 @@ def change_password():
         description: Invalid current password
     """
     try:
-        user_id = get_jwt_identity()
+        user_id = int(get_jwt_identity())
         user = User.query.get(user_id)
         
         if not user:
@@ -482,7 +473,7 @@ def verify_token():
         description: Token is valid
     """
     try:
-        user_id = get_jwt_identity()
+        user_id = int(get_jwt_identity())
         user = User.query.get(user_id)
         
         if not user or not user.is_active:
