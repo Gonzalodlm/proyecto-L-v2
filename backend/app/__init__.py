@@ -47,4 +47,12 @@ def create_app(config_class=Config):
     def health_check():
         return {'status': 'healthy', 'service': 'impulso-inversor-backend'}
     
+    # Initialize database tables
+    with app.app_context():
+        try:
+            db.create_all()
+            print("✅ Database tables created successfully")
+        except Exception as e:
+            print(f"❌ Error creating database tables: {e}")
+    
     return app
