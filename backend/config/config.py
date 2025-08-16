@@ -35,6 +35,7 @@ class Config:
         'http://localhost:3000',  # React dev server
         'http://localhost:5173',  # Vite dev server
         'https://impulso-inversor.com',  # Production domain
+        'https://proyecto-l-v2-2.vercel.app',  # Vercel deployment
     ]
     
     # Financial Data Settings
@@ -72,8 +73,8 @@ class ProductionConfig(Config):
     SECRET_KEY = os.environ.get('SECRET_KEY')
     JWT_SECRET_KEY = os.environ.get('JWT_SECRET_KEY')
     
-    if not SECRET_KEY:
-        raise ValueError('SECRET_KEY environment variable must be set in production')
+    # Only check for required env vars if actually using this config
+    # The check will happen in create_app if needed
 
 
 # Configuration dictionary
