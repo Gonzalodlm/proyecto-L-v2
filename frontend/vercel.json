@@ -2,7 +2,7 @@
   "rewrites": [
     {
       "source": "/api/(.*)",
-      "destination": "https://tu-api.onrender.com/api/$1"
+      "destination": "https://impulso-inversor-api.onrender.com/api/$1"
     },
     {
       "source": "/(.*)",
