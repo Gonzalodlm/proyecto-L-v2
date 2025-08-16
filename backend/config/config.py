@@ -13,7 +13,7 @@ class Config:
     
     # Database Settings
     SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or \
-        'postgresql://impulso_user:impulso_pass@localhost/impulso_inversor'
+        'sqlite:///impulso_inversor.db'
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     SQLALCHEMY_ENGINE_OPTIONS = {
         'pool_pre_ping': True,
