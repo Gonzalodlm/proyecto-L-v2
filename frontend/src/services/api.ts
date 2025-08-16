@@ -3,7 +3,9 @@ import type { AxiosInstance, AxiosResponse, AxiosError } from 'axios';
 import type { ApiResponse } from '../types';
 
 // API configuration
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000';
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || (
+  import.meta.env.PROD ? '/api' : 'http://localhost:5000'
+);
 
 // Create axios instance
 const apiClient: AxiosInstance = axios.create({
@@ -172,6 +174,15 @@ export const api = {
       apiRequest('POST', '/api/etfs/diversification', { allocations }),
     
     getSupportedTickers: () => apiRequest<string[]>('GET', '/api/etfs/tickers'),
+    
+    getCurrentPrices: (tickers: string[]) => 
+      apiRequest('POST', '/api/etfs/prices', { tickers }),
+    
+    getHistoricalData: (ticker: string, period: string = '1y') =>
+      apiRequest('GET', `/api/etfs/${ticker}/history?period=${period}`),
+    
+    getPortfolioPerformance: (allocations: Record<string, number>, period: string = '1y') =>
+      apiRequest('POST', '/api/etfs/portfolio/performance', { allocations, period }),
   },
 
   // Analysis endpoints
