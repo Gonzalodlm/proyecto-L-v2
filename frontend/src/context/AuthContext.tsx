@@ -101,7 +101,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const checkAuth = async () => {
     const token = tokenManager.getToken();
     if (!token) {
-      dispatch({ type: 'AUTH_ERROR', payload: 'No token found' });
+      dispatch({ type: 'AUTH_LOGOUT' });
       return;
     }
 
